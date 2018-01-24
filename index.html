@@ -15,7 +15,7 @@
   <script type="text/javascript" src="./peer.js"></script>
 
   <script>
-    var userName = 'jitesh';
+    var userName = 'ankur';
     var connection, peer;
     // Connect to PeerJS, have server assign an ID instead of providing one
     // Showing off some of the configs available with PeerJS :).
@@ -45,7 +45,7 @@
       connection = c;
       // Add data listener
       c.on('data', function (data) {
-        $('.messages').append('<div><span class="peer">' + c.peer + '</span>: ' + data + '</div>');
+        $('#messages').append('<div><span class="peer">' + c.peer + '</span>: ' + data + '</div>');
       });
       // Show alert when closed
       c.on('close', function () {
@@ -55,9 +55,12 @@
     $(document).ready(function () {
       // Connect to a peer
       $('.connect').click(function () {
-        var requestedPeer = $(this).text();
+        var requestedPeer = $(this).val();
+        console.log("nameaaaaaaaaa",$(this).val());
         // Close the old connection
-        connection.close();
+        if (connection) {
+          connection.close();
+        }
         // Create a new connection
         connection = peer.connect(requestedPeer, {
           label: 'chat',
@@ -72,14 +75,14 @@
         });
       });
       // Send a chat message to all active connections.
-      $('#send').submit(function (e) {
+      $('#send').click(function (e) {
         e.preventDefault();
         // Get the message
         var msg = $('#text').val();
         // Send the message
         connection.send(msg);
         // Show in the UI with title 'You'
-        $('.message').append('<div><span class="you">You: </span>' + msg + '</div>');
+        $('#messages').append('<div><span class="you">You: </span>' + msg + '</div>');
         // Reset and focus on the input box
         $('#text').val('');
         $('#text').focus();
@@ -116,32 +119,32 @@
     <div class="row">
       <div class="col-md-3 button-section"> 
         <div class="list-group">
-          <button type="button" class="list-group-item connect" >
+          <button type="button" class="list-group-item connect" value="abhishek">
             <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
             <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
             Abhishek
           </button>
-          <button type="button" class="list-group-item connect">
+          <button type="button" class="list-group-item connect" value="rajat">
             <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
             <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
             Rajat
           </button>
-          <button type="button" class="list-group-item connect">
+          <button type="button" class="list-group-item connect" value="ankur">
             <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
             <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
             Ankur
           </button>
-          <button type="button" class="list-group-item connect">
+          <button type="button" class="list-group-item connect" value="varun">
             <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
             <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
             Varun
           </button>
-          <button type="button" class="list-group-item connect">
+          <button type="button" class="list-group-item connect" value="jitesh">
             <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
             <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
             Jitesh
           </button>
-          <button type="button" class="list-group-item connect">
+          <button type="button" class="list-group-item connect" value="dummy">
             <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
             <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
             Dummy
@@ -168,36 +171,3 @@
   </div>  
 </body> 
 </html> 
-
-
-<!-- 
-
-  <div id="actions">
-    Your PeerJS ID is <span id="pid"></span><br>
-    Connect to a peer: <input type="text" id="rid" placeholder="Someone else's id"><input class="button" type="button" value="Connect" id="connect"><br><br>
-
-    <form id="send">
-      <input type="text" id="text" placeholder="Enter message"><input class="button" type="submit" value="Send to selected peers">
-    </form>
-    <button id="close">Close selected connections</button>
-  </div>
-
-  <div id="wrap"><div id="connections"><span class="filler">You have not yet
-        made any connections.</span></div>
-    <div class="clear"></div></div>
-
-  <div id="box" style="background: #fff; font-size: 18px;padding:40px 30px; text-align: center;">
-    Drag file here to send to active connections.
-  </div>
-  
-  
-  <div class="warning browser">
-    <div class="important">Your browser version: <span id="browsers"></span><br>
-  Currently <strong>Firefox 22+ and Google Chrome 26.0.1403.0 or above</strong> is required.</strong></div>For more up to date compatibility
-information see <a href="http://peerjs.com/status">PeerJS WebRTC
-  Status</a><br>Note that this demo may also fail if you are behind
-stringent firewalls or both you and the remote peer and behind symmetric
-NATs.
-
-<div class="log" style="color:#FF7500;text-shadow:none;padding:15px;background:#eee"><strong>Connection status</strong>:<br></div>
-</div> -->
