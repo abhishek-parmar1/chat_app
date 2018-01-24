@@ -26,7 +26,7 @@ body,html {
 .button-section{
   background: #52364C;
   padding: 20px 10px;
-  min-height: 450px;
+  min-height: 530px;
 }
 button.connect {
   background-color: #52364C !important;
@@ -48,7 +48,7 @@ button.connect:hover {
   padding-right: 0 !important;
 }
 .chat {
-  min-height: 400px
+  min-height: 480px
 }
 #send {
   font-weight: bolder;;
