@@ -25,13 +25,13 @@ body,html {
 .connection.active {
   border-color: #FF7500;
 }
-h1 {
+/*h1 {
   font-size: 15px;
   padding: 5px 10px;
   margin: 0 -10px 0 -10px;
   border-bottom: 1px solid #ccc;
   font-weight: 300;
-}
+}*/
 .active h1 strong {
   color: #FF7500;
 }
@@ -88,7 +88,7 @@ a {
   padding: 10px;
 }
 
-button, input {
+/*button, input {
   font-size: 15px;
   font-family: Arial;
   border: 1px solid #ccc;
@@ -98,17 +98,17 @@ button, input {
   margin: 0;
   color: #444;
   text-shadow: 0 1px 0 rgba(255,255,255,0.4);
-}
+}*/
 input:focus {
   outline: none;
 }
-.button, button {
+/*.button, button {
   cursor: pointer;
   background-color: #ddd;
   border: 1px solid #ccc;
 
 
-}
+}*/
 form {
   display: inline-block;
 }
@@ -121,4 +121,25 @@ form {
   font-size: 15px;
   color: #F2C777;
   margin-bottom: 10px;
+}
+
+.button-title{
+  background-color: #31202E;
+  color: white;
+}
+
+.button-section{
+  background: #52364C;
+  padding: 20px 10px;
+}
+button {
+  background-color: #52364C !important;
+  color: white !important;
+  font-weight: bolder;
+}
+button:hover {
+  background-color: #3E313C !important;
+}
+.color-slack {
+  background-color: #1293E2;
 }

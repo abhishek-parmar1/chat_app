@@ -1,197 +1,164 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
 <head>
-<title>PeerJS chat demo</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
-<meta http-equiv="Content-Language" content="en-us"> 
+  <title>PeerJS chat demo</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+  <meta http-equiv="Content-Language" content="en-us"> 
 
-<link href="./fancy.css" rel="stylesheet" type="text/css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-<script type="text/javascript" src="./peer.js"></script>
-<script>
-// Connect to PeerJS, have server assign an ID instead of providing one
-// Showing off some of the configs available with PeerJS :).
-var peer = new Peer('rajatvijay1z', {
-  // Set API key for cloud server (you don't need this if you're running your
-  // own.
-  key: 'x7fwx2kavpy6tj4i',
+  <link href="./fancy.css" rel="stylesheet" type="text/css">
 
-  // Set highest debug level (log everything!).
-  debug: 3,
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 
-  // Set a logging function:
-  logFunction: function() {
-    var copy = Array.prototype.slice.call(arguments).join(' ');
-    $('.log').append(copy + '<br>');
-  }
-});
-var connectedPeers = {};
+  <script type="text/javascript" src="./peer.js"></script>
 
-// Show this peer's ID.
-peer.on('open', function(id){
-  $('#pid').text(id);
-});
-
-// Await connections from others
-peer.on('connection', connect);
-
-peer.on('error', function(err) {
-  console.log(err);
-})
-
-// Handle a connection object.
-function connect(c) {
-  // Handle a chat connection.
-  if (c.label === 'chat') {
-    var chatbox = $('<div></div>').addClass('connection').addClass('active').attr('id', c.peer);
-    var header = $('<h1></h1>').html('Chat with <strong>' + c.peer + '</strong>');
-    var messages = $('<div><em>Peer connected.</em></div>').addClass('messages');
-    chatbox.append(header);
-    chatbox.append(messages);
- 
-    // Select connection handler.
-    chatbox.on('click', function() {
-      if ($(this).attr('class').indexOf('active') === -1) {
-        $(this).addClass('active');
-      } else {
-        $(this).removeClass('active');
-      }
+  <script>
+    var userName = 'superman';
+    var connection, peer;
+    // Connect to PeerJS, have server assign an ID instead of providing one
+    // Showing off some of the configs available with PeerJS :).
+    peer = new Peer(userName, {
+      // Set API key for cloud server (you don't need this if you're running your
+      // own.
+      key: 'x7fwx2kavpy6tj4i',
+      // Set highest debug level (log everything!).
+      debug: 3,
+      // Set a logging function:
+      logFunction: console.log
     });
-    $('.filler').hide();
-    $('#connections').append(chatbox);
-
-    c.on('data', function(data) {
-      messages.append('<div><span class="peer">' + c.peer + '</span>: ' + data +
-        '</div>');
-        });
-        c.on('close', function() {
-          alert(c.peer + ' has left the chat.');
-          chatbox.remove();
-          if ($('.connection').length === 0) {
-            $('.filler').show();
-          }
-          delete connectedPeers[c.peer];
-        });
-  } else if (c.label === 'file') {
-    c.on('data', function(data) {
-      // If we're getting a file, create a URL for it.
-      if (data.constructor === ArrayBuffer) {
-        var dataView = new Uint8Array(data);
-        var dataBlob = new Blob([dataView]);
-        var url = window.URL.createObjectURL(dataBlob);
-        $('#' + c.peer).find('.messages').append('<div><span class="file">' +
-            c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
-      }
+    // var connectedPeers = {};
+    // Show this peer's ID.
+    peer.on('open', function (id) {
+      $('#pid').text(id);
     });
-  }
-  connectedPeers[c.peer] = 1;
-}
-
-$(document).ready(function() {
-  // Prepare file drop box.
-  var box = $('#box');
-  box.on('dragenter', doNothing);
-  box.on('dragover', doNothing);
-  box.on('drop', function(e){
-    e.originalEvent.preventDefault();
-    var file = e.originalEvent.dataTransfer.files[0];
-    eachActiveConnection(function(c, $c) {
-      if (c.label === 'file') {
-        c.send(file);
-        $c.find('.messages').append('<div><span class="file">You sent a file.</span></div>');
-      }
+    // Await connections from others
+    peer.on('connection', connect);
+    // Log in case of any error
+    peer.on('error', function (err) {
+      console.log(err);
     });
-  });
-  function doNothing(e){
-    e.preventDefault();
-    e.stopPropagation();
-  }
-
-  // Connect to a peer
-  $('#connect').click(function() {
-    var requestedPeer = $('#rid').val();
-    if (!connectedPeers[requestedPeer]) {
-      // Create 2 connections, one labelled chat and another labelled file.
-      var c = peer.connect(requestedPeer, {
-        label: 'chat',
-        serialization: 'none',
-        metadata: {message: 'hi i want to chat with you!'}
+    // Handle a connection object.
+    function connect(c) {
+      // Keep a global reference
+      connection = c;
+      // Add data listener
+      c.on('data', function (data) {
+        $('.messages').append('<div><span class="peer">' + c.peer + '</span>: ' + data + '</div>');
       });
-      c.on('open', function() {
-        connect(c);
+      // Show alert when closed
+      c.on('close', function () {
+        alert(c.peer + ' has left the chat.');
       });
-      c.on('error', function(err) { alert(err); });
-      var f = peer.connect(requestedPeer, { label: 'file', reliable: true });
-      f.on('open', function() {
-        connect(f);
-      });
-      f.on('error', function(err) { alert(err); });
     }
-    connectedPeers[requestedPeer] = 1;
-  });
-
-  // Close a connection.
-  $('#close').click(function() {
-    eachActiveConnection(function(c) {
-      c.close();
+    $(document).ready(function () {
+      // Connect to a peer
+      $('.connect').click(function () {
+        var requestedPeer = $(this).text();
+        // Close the old connection
+        connection.close();
+        // Create a new connection
+        connection = peer.connect(requestedPeer, {
+          label: 'chat',
+          serialization: 'none',
+          metadata: {message: 'hi i want to chat with you!'}
+        });
+        connection.on('open', function () {
+          connect(connection);
+        });
+        connection.on('error', function (err) {
+          alert(err);
+        });
+      });
+      // Send a chat message to all active connections.
+      $('#send').submit(function (e) {
+        e.preventDefault();
+        // Get the message
+        var msg = $('#text').val();
+        // Send the message
+        connection.send(msg);
+        // Show in the UI with title 'You'
+        $('.message').append('<div><span class="you">You: </span>' + msg + '</div>');
+        // Reset and focus on the input box
+        $('#text').val('');
+        $('#text').focus();
+      });
     });
-  });
-
-  // Send a chat message to all active connections.
-  $('#send').submit(function(e) {
-    e.preventDefault();
-    // For each active connection, send the message.
-    var msg = $('#text').val();
-    eachActiveConnection(function(c, $c) {
-      if (c.label === 'chat') {
-        c.send(msg);
-        $c.find('.messages').append('<div><span class="you">You: </span>' + msg
-          + '</div>');
+    // Make sure things clean up properly.
+    window.onunload = window.onbeforeunload = function (e) {
+      if (!!peer && !peer.destroyed) {
+        peer.destroy();
       }
-    });
-    $('#text').val('');
-    $('#text').focus();
-  });
-
-  // Goes through each active peer and calls FN on its connections.
-  function eachActiveConnection(fn) {
-    var actives = $('.active');
-    var checkedIds = {};
-    actives.each(function() {
-      var peerId = $(this).attr('id');
-
-      if (!checkedIds[peerId]) {
-        var conns = peer.connections[peerId];
-        for (var i = 0, ii = conns.length; i < ii; i += 1) {
-          var conn = conns[i];
-          fn(conn, $(this));
-        }
-      }
-
-      checkedIds[peerId] = 1;
-    });
-  }
-
-  // Show browser version
-  $('#browsers').text(navigator.userAgent);
-});
-
-// Make sure things clean up properly.
-
-window.onunload = window.onbeforeunload = function(e) {
-  if (!!peer && !peer.destroyed) {
-    peer.destroy();
-  }
-};
-
-</script>
+    };
+  </script>
 </head> 
  
 <body> 
-  <a href="https://github.com/peers/peerjs"><img style="position: absolute; top: 0; right: 0; border: 0;"
-    src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
-    alt="Fork me on GitHub"></a>
+  <div class="container">
+    <div class="row color-slack">
+      <div class="col-md-offset-4">
+        <h1>
+          CHIT - CHAT APP
+        </h1>
+      </div>
+    </div>
+    <div class="row color-slack">
+      <div class="col-md-offset-4">
+        <h3>Your PeerJS ID is <span id="pid"></span></h3>    
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 button-title" >
+        <h2>Connect to a peer</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 button-section"> 
+        <div class="list-group">
+          <button type="button" class="list-group-item connect" >
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
+            <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
+            Abhishek
+          </button>
+          <button type="button" class="list-group-item connect">
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
+            <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
+            Rajat
+          </button>
+          <button type="button" class="list-group-item connect">
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
+            <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
+            Ankur
+          </button>
+          <button type="button" class="list-group-item connect">
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
+            <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
+            Varun
+          </button>
+          <button type="button" class="list-group-item connect">
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
+            <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
+            Jitesh
+          </button>
+          <button type="button" class="list-group-item connect">
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
+            <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;
+            Dummy
+          </button>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div>
+        </div> 
+      </div>
+    </div>  
+  </div>  
+</body> 
+</html> 
+
+
+<!-- 
 
   <div id="actions">
     Your PeerJS ID is <span id="pid"></span><br>
@@ -221,6 +188,4 @@ stringent firewalls or both you and the remote peer and behind symmetric
 NATs.
 
 <div class="log" style="color:#FF7500;text-shadow:none;padding:15px;background:#eee"><strong>Connection status</strong>:<br></div>
-</div>
-</body> 
-</html> 
+</div> -->
