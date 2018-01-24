@@ -15,7 +15,7 @@
   <script type="text/javascript" src="./peer.js"></script>
 
   <script>
-    var userName = 'superman';
+    var userName = 'jitesh';
     var connection, peer;
     // Connect to PeerJS, have server assign an ID instead of providing one
     // Showing off some of the configs available with PeerJS :).
@@ -149,10 +149,22 @@
         </div>
       </div>
       <div class="col-md-9">
-        <div>
+        <div class="chat">
+          &nbsp;
+          <div id="messages"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="input-group">
+              <input type="text" class="form-control" type="text" class="form-control" id="text" placeholder="Type your message here">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="send">SEND</button>
+              </span>
+            </div>
+          </div>
         </div> 
       </div>
-    </div>  
+    </div>
   </div>  
 </body> 
 </html> 

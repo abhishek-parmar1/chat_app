@@ -8,7 +8,7 @@ body,html {
   font-size: 15px;
   line-height: 18px;
   text-shadow: 0 1px 0 rgba(255,255,255,0.4);
-}
+}/*
 .connection {
   float: left;
   height: 250px;
@@ -25,13 +25,13 @@ body,html {
 .connection.active {
   border-color: #FF7500;
 }
-/*h1 {
+h1 {
   font-size: 15px;
   padding: 5px 10px;
   margin: 0 -10px 0 -10px;
   border-bottom: 1px solid #ccc;
   font-weight: 300;
-}*/
+}
 .active h1 strong {
   color: #FF7500;
 }
@@ -55,7 +55,7 @@ body,html {
 .you {
   color: #0C6BA1;
   font-weight: 600;
-}
+}*/
 #pid {
   display: inline-block;
   padding: 5px;
@@ -65,7 +65,7 @@ body,html {
   color: #0C6BA1;
   font-weight: 600;
 }
-.warning {
+/*.warning {
   font-size: 12px;
   line-height: 20px;
   padding: 10px;
@@ -86,7 +86,7 @@ a {
 }
 #actions {
   padding: 10px;
-}
+}*/
 
 /*button, input {
   font-size: 15px;
@@ -99,9 +99,9 @@ a {
   color: #444;
   text-shadow: 0 1px 0 rgba(255,255,255,0.4);
 }*/
-input:focus {
+/*input:focus {
   outline: none;
-}
+}*/
 /*.button, button {
   cursor: pointer;
   background-color: #ddd;
@@ -109,7 +109,7 @@ input:focus {
 
 
 }*/
-form {
+/*form {
   display: inline-block;
 }
 #close {
@@ -121,7 +121,7 @@ form {
   font-size: 15px;
   color: #F2C777;
   margin-bottom: 10px;
-}
+}*/
 
 .button-title{
   background-color: #31202E;
@@ -131,15 +131,27 @@ form {
 .button-section{
   background: #52364C;
   padding: 20px 10px;
+  min-height: 430px;
 }
-button {
+button.connect {
   background-color: #52364C !important;
   color: white !important;
   font-weight: bolder;
 }
-button:hover {
+button.connect:hover {
   background-color: #3E313C !important;
 }
 .color-slack {
   background-color: #1293E2;
+}
+.chat {
+  border: 10px solid gray;
+  padding: 5px;
+}
+.col-md-9{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.chat {
+  min-height: 400px
 }
