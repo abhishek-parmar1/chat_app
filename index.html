@@ -15,7 +15,7 @@
   <script type="text/javascript" src="./peer.js"></script>
 
   <script>
-    var userName = 'ankur';
+    var userName = 'dummy';
     var connection, peer;
     // Connect to PeerJS, have server assign an ID instead of providing one
     // Showing off some of the configs available with PeerJS :).
@@ -56,7 +56,6 @@
       // Connect to a peer
       $('.connect').click(function () {
         var requestedPeer = $(this).val();
-        console.log("nameaaaaaaaaa",$(this).val());
         // Close the old connection
         if (connection) {
           connection.close();
@@ -99,20 +98,9 @@
  
 <body> 
   <div class="container">
-    <div class="row color-slack">
-      <div class="col-md-offset-4">
-        <h1>
-          CHIT - CHAT APP
-        </h1>
-      </div>
-    </div>
-    <div class="row color-slack">
-      <div class="col-md-offset-4">
-        <h3>Your PeerJS ID is <span id="pid"></span></h3>    
-      </div>
-    </div>
     <div class="row">
       <div class="col-md-12 button-title" >
+        <h3 style="text-align:center">Your ID is <span id="pid"></span></h3>
         <h2>Connect to a peer</h2>
       </div>
     </div>
